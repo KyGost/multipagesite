@@ -7,7 +7,7 @@
 		var $do;
 		var $HTML;
 
-		public function __construct($name, $URL, $HTML, $do = null, $side = false)
+		public function __construct($name, $URL, $HTML = "", $do = null, $side = false)
 		{
 			parent::__construct($name, $side);
 			$this->URL = $URL;

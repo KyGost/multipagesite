@@ -9,7 +9,7 @@
 		public $homePage = "";
 		public $page404 = "";
 		//// Server location of CSS file
-		public $CSS = "/var/www/libs/multipagesite/default.css";
+		public $CSS = __DIR__ . "/default.css"; 
 
 		private $pages;
 		private $currentPage;
@@ -42,7 +42,11 @@
 				}
 			}
 
-			if (!is_null($this->currentPage->do)) $this->moreBody .= ($this->currentPage->do)();
+			if (!is_null($this->currentPage->do))
+			{
+				$do = $this->currentPage->do;
+				$this->moreBody .= $do();
+			}
 		}
 
 		public function showSite()
@@ -80,6 +84,7 @@
 					array_push($classes, "side");
 				}
 				
+				if ($page instanceOf unlistedPage) continue;
 				if ($page instanceOf dropdownPage)
 				{
 					array_push($classes, $page->name);
@@ -162,15 +167,21 @@
 		{
 			if (empty($_GET['page']))
 			{
-				if (!empty($this->homePage)) header("Location: ?page=" . $this->homePage);
-				elseif (!empty($this->page404)) header("Location: ?page=" . $this->page404);
+				if (!empty($this->homePage)) header("Location: " . $this->preURL . $this->homePage);
+				elseif (!empty($this->page404)) header("Location: " . $this->preURL . $this->page404);
 				else die(http_response_code(404));
 			}
 			if (!($this->currentPage instanceOf clickablePage))
 			{
-				if (!empty($this->page404)) header("Location: ?page=" . $this->page404);
+				if (!empty($this->page404)) header("Location: " . $this->preURL . $this->page404);
 				else die(http_response_code(404));
 			}
+		}
+
+
+		public function moreCSS($CSS)
+		{
+			$this->$moreHead .= incapsulate("STYLE", $CSS);
 		}
 	}
 ?>
